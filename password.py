@@ -11,6 +11,25 @@ def checkNumber(text):
     else:
         return False
     
+def checkCapitalLetters(text):
+    if re.search(r"[A-Z]",text):
+        return True
+    else:
+        return False
+
+def checkSpecialCharacters(text):
+    if re.search(r"\W", text):
+        return True
+    else:
+        return False 
+
+def checkPassword(password):
+    isCorrectPassword = (len(password) >= 8) 
+    isCorrectPassword &= checkCapitalLetters(password)
+    isCorrectPassword &= checkNumber(password)
+    isCorrectPassword &= checkSpecialCharacters(password)
+    return isCorrectPassword
+     
 
 def newPassword():
     global isPassword
@@ -26,6 +45,22 @@ def newPassword():
             - 1 number
             - 1 special character
         ''')
-        password = getpass.getpass(prompt='Main password: ', stream=None)
+        
+        
+        # Input && Check password once and twice
+        print("Enter your main password.")
 
-        isPassword = True
+        while True:
+            password = getpass.getpass(prompt='Password :', stream=None)
+
+            # Check once
+            if checkPassword(password):
+                secondPassword = getpass.getpass(prompt='Enter your password a second time :', stream=None)
+                # Check Twice
+                if secondPassword == password:
+                    break
+                print("Incorrect : Your second password is not the same as the first one.")
+                continue
+            print("It's an invalid password.")
+
+        return password
